@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <random>
 
 struct data{
     double time;
@@ -9,7 +10,7 @@ struct data{
 };
 
 /*************************************************************
- * param in - file to load data from (to be implemented)
+ * param in  - file to load data from (to be implemented)
  * param out - vector containing timestamp and position
  * remarks -  
  * **********************************************************/
@@ -37,10 +38,31 @@ void loadData(std::vector<data> &out)
     }
 }
 
+/*********************************************************
+ * param in  - standard deviation of noise to be added, reference 
+ *             of vector to which noise is to be added
+ * param out - vector with added noise in posX
+ * remarks - 
+ * *******************************************************/
+void addNoise(std::vector<data> &out, const double stdDev)
+{
+    const double mean = 0.0;
+    std::default_random_engine generator;
+    std::normal_distribution<double> dist(mean,stdDev);
+
+    for (auto& x : out)
+    {
+        x.posX += dist(generator); 
+    }
+
+}
+
 int main()
 {
     std::vector<data> camData;
     loadData(camData);
+    addNoise(camData, 0.1);
+
     for (int i=0;i<20;i++)
     {
         std::cout << camData[i].posX<<std::endl;
