@@ -16,10 +16,10 @@ struct data{
  * param out - vector containing timestamp and position
  * remarks   - data is assumed to be stored in csv format - timestamp, posX (in m)
  * **********************************************************/
-void loadData(std::vector<data> &out)
+void loadData(std::vector<data> &out, const std::string& filename)
 {
     std::string line;
-    std::ifstream stream("../data/cam_data1.txt"); 
+    std::ifstream stream("../data/" + filename); 
     if (stream.is_open())
     {
         while (std::getline(stream, line))
@@ -64,7 +64,8 @@ int main()
 {
     std::vector<data> camData;
     std::vector<data> noisyCamData;
-    loadData(camData);
+    std::string camFile1 = "cam_data1.txt";
+    loadData(camData, camFile1);
 
     double sensorStdDev = 2.0;
     addNoise(camData, sensorStdDev, noisyCamData);
