@@ -29,15 +29,15 @@ class KalmanFilter{
         double getFilteredPosX() {return xHat[0];};
 
     private:
-        double dt, sigmaA;
+        double dt, sigmaA, sensorStdDev;
         int numStates = 2;
         int numMeas = 1;
         bool initialized;
         Eigen::Vector2d xHat, xHatNew, G;
-        Eigen::Matrix2d F, P, Q, I;
-        Eigen::Matrix<double, 1, 2> H;
-        Eigen::MatrixXd K;
-        Eigen::Matrix<double, 1, 1> R, y;
+        Eigen::Matrix2d F, P, Q, I;         // F - state transition matrix; P - Process covariance matrix; Q - Process noise covariance matrix; I -Identity matrix
+        Eigen::Matrix<double, 1, 2> H;      // H - Measuring matrix
+        Eigen::MatrixXd K;                  // K - Kalman Gain
+        Eigen::Matrix<double, 1, 1> R, y;   // R - Measurement noise covariance, y - residual
 
 };
 

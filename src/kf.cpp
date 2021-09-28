@@ -15,7 +15,7 @@ void KalmanFilter::init(const Eigen::Vector2d &x0, const Eigen::Matrix2d &p, dou
     this->sigmaA = sigmaA;
     dt = 0;
     H << 1, 0;
-    R << std::pow(sensorStdDev,2.0);
+    this->sensorStdDev = sensorStdDev;
     I.setIdentity();
     initialized = true;
     std::cout<< "Kalman Filter initialized"<< std::endl;
@@ -28,11 +28,14 @@ void KalmanFilter::update( double dt, const Eigen::VectorXd &z)
     {
         throw std::runtime_error("Filter has not been initialized!");
     }
+    
     this->dt = dt;
     F << 1, this->dt, 
         0, 1;
     G << 0.5*dt*dt, dt;
     Q = G*G.transpose()*(sigmaA*sigmaA);
+    //R << std::pow(sensorStdDev,2.0);
+    R << std::pow(sqrt(z[0]/10 + sensorStdDev),2.0);
     
     // Predict Step
     xHatNew = F * xHat;
